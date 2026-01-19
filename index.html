@@ -81,6 +81,7 @@ button {
     background:var(--accent);
     color:white;
     cursor:pointer;
+    
 }
 
 button:disabled {
@@ -109,7 +110,9 @@ button:disabled {
         <p id="prestige">Prestiges: 0 | Base Multiplier: 1×</p>
     </div>
 
-    <button id="mainClick">Click Mr. Wright</button>
+    <button id="mainClick" class="btn">
+        <img src="Img/Mr_Wright.jpg" alt="Click Me" style="width:600px; height:600px; border-radius:50%; object-fit:cover; vertical-align:middle; margin-right:10px;">
+    </button>
 </div>
 
 <div id="upgrades"></div>
@@ -117,7 +120,7 @@ button:disabled {
 </div>
 
 <script>
-/* ===== GAME STATE ===== */
+
 let money = 0;
 let clickValue = 1;
 let moneyPerSecond = 0;
@@ -128,7 +131,6 @@ let activeMultiplier = 1;
 
 let goal = 100_000_000;
 
-/* ===== DOM ===== */
 const moneyText = document.getElementById("money");
 const perClickText = document.getElementById("perClick");
 const perSecondText = document.getElementById("perSecond");
@@ -137,7 +139,6 @@ const prestigeText = document.getElementById("prestige");
 const mainClick = document.getElementById("mainClick");
 const upgradesDiv = document.getElementById("upgrades");
 
-/*clicking*/
 mainClick.onclick = () => {
     money += clickValue * activeMultiplier;
     bump();
@@ -150,7 +151,6 @@ function bump() {
     setTimeout(() => moneyText.classList.remove("bump"), 150);
 }
 
-/*Upgrades*/
 const baseUpgrades = [
     { name:"Glasses", baseCost:25, click:1, img:"Img/Glasses.jpg"},
     { name:"F- Math Test", baseCost:10000, click:10, img:"Img/F.jpg"},
@@ -171,7 +171,6 @@ const baseUpgrades = [
 
 let upgrades = [];
 
-/*Upgrade system*/
 function buildUpgrades() {
     upgradesDiv.innerHTML = "";
     upgrades = [];
@@ -206,7 +205,6 @@ function buildUpgrades() {
     });
 }
 
-/*The shop*/
 function buyUpgrade(u) {
     if (money < u.cost) return;
     money -= u.cost;
@@ -231,14 +229,12 @@ function buyUpgrade(u) {
     updateUI();
 }
 
-/* ===== PASSIVE ===== */
 setInterval(() => {
     money += moneyPerSecond * activeMultiplier;
     checkPrestige();
     updateUI();
 }, 1000);
 
-/* ===== PRESTIGE ===== */
 function checkPrestige() {
     if (money >= goal) {
         prestigeCount++;
@@ -255,13 +251,11 @@ function checkPrestige() {
     }
 }
 
-/* ===== SORT UPGRADES ===== */
 function sortUpgradesByCost() {
     upgrades.sort((a, b) => a.cost - b.cost);
     upgrades.forEach(u => upgradesDiv.appendChild(u.div));
 }
 
-/* ===== UI ===== */
 function updateUI() {
     moneyText.textContent = "$" + Math.floor(money);
     perClickText.textContent = "$" + Math.floor(clickValue * activeMultiplier) + " per click";
@@ -286,7 +280,6 @@ function updateUI() {
     sortUpgradesByCost();
 }
 
-/* INIT */
 buildUpgrades();
 updateUI();
 </script>
